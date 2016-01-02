@@ -13,10 +13,11 @@ import com.digi.xbee.api.models.ExplicitXBeeMessage;
 public class Router implements IExplicitDataReceiveListener {
 
 	private static Router uniqueInstance;
-	private TreatRequest treatRequest;
+	private TreatDataReceived treatDataReceived;
+	private IProcessMessage iProcessMessage;
 
 	private Router() {
-		treatRequest = new TreatRequest();
+		treatDataReceived = new TreatDataReceived();
 	}
 
 	public static Router getInstance() {
@@ -26,8 +27,8 @@ public class Router implements IExplicitDataReceiveListener {
 		return uniqueInstance;
 	}
 
-	public void sendMessage(DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice, int contentType,
-			byte[] dataToSend) {
+	public void sendMessage(DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice, int contentType, byte[] dataToSend)
+			throws TimeoutException, XBeeException {
 
 		int dataSize = dataToSend.length;
 		int firstBytePosition = 0;
@@ -55,43 +56,40 @@ public class Router implements IExplicitDataReceiveListener {
 		// 5º: define a posição inicial do fragmento no byte[] da mensagem
 		// original.
 		// 6º: byte[] com fragmento da mensagem original.
-		try {
-			myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_INIT, contentType, dataSize,
-					firstBytePosition, noMessage);
+		myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_INIT, contentType, dataSize,
+				firstBytePosition, noMessage);
 
-			do {
-				byte[] fragmentOfData = Arrays.copyOfRange(dataToSend, firstBytePosition, lastBytePosition);
+		do {
+			byte[] fragmentOfData = Arrays.copyOfRange(dataToSend, firstBytePosition, lastBytePosition);
 
-				myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_DATA, contentType, dataSize,
-						firstBytePosition, fragmentOfData);
-				fragmentArray[count] = fragmentOfData;
-				firstBytePosition = lastBytePosition;
-				lastBytePosition = lastBytePosition + MessageParameter.PAYLOAD_SIZE;
-				if (lastBytePosition > dataSize) {
-					lastBytePosition = dataSize;
-				}
-				count++;
-			} while (firstBytePosition < dataSize);
+			myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_DATA, contentType, dataSize,
+					firstBytePosition, fragmentOfData);
+			fragmentArray[count] = fragmentOfData;
+			firstBytePosition = lastBytePosition;
+			lastBytePosition = lastBytePosition + MessageParameter.PAYLOAD_SIZE;
+			if (lastBytePosition > dataSize) {
+				lastBytePosition = dataSize;
+			}
+			count++;
+		} while (firstBytePosition < dataSize);
 
-			// Armazena os fragmentos em cache
-			CacheMessage.getInstance().addMessage(new Date().getTime(), fragmentArray);
+		// Armazena os fragmentos em cache
+		CacheMessage.getInstance().addMessage(new Date().getTime(), fragmentArray);
 
-			myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_END, contentType, qtdPackages, 0,
-					noMessage);
+		myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_END, contentType, qtdPackages, 0,
+				noMessage);
+	}
 
-		} catch (TimeoutException e) {
-			System.out.println(
-					"Erro " + ErrorMessage.TIMEOUT_ERROR.value() + ": " + ErrorMessage.TIMEOUT_ERROR.description());
-			e.printStackTrace();
-		} catch (XBeeException e) {
-			System.out.println("Erro " + ErrorMessage.XBEE_EXCEPTION_ERROR.value() + ": "
-					+ ErrorMessage.XBEE_EXCEPTION_ERROR.description());
-			e.printStackTrace();
-		}
+	public void processMyMessage(IProcessMessage iProcessMessage) {
+		this.iProcessMessage = iProcessMessage;
+	}
+
+	public IProcessMessage getIProcessMessage() {
+		return iProcessMessage;
 	}
 
 	@Override
 	public void explicitDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
-		treatRequest.process(explicitXBeeMessage);
+		treatDataReceived.processDataReceived(explicitXBeeMessage);
 	}
 }

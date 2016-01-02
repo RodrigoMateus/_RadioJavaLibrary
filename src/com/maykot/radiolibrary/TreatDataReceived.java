@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.digi.xbee.api.models.ExplicitXBeeMessage;
 
-public class TreatRequest {
+public class TreatDataReceived {
 
 	ConcurrentHashMap<String, byte[]> messageHashmap = new ConcurrentHashMap<String, byte[]>();
 
@@ -18,7 +18,7 @@ public class TreatRequest {
 	// .getData() retorna o byte[] com fragmento da mensagem original
 	ExplicitXBeeMessage explicitXBeeMessage;
 
-	public void process(ExplicitXBeeMessage explicitXBeeMessage) {
+	public void processDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
 		byte[] byteArrayMessage;
 		this.explicitXBeeMessage = explicitXBeeMessage;
 
@@ -46,7 +46,7 @@ public class TreatRequest {
 
 		case MessageParameter.ENDPOINT_SEND_END:
 			messageHashmap.remove(explicitXBeeMessage.getDevice().get64BitAddress().toString());
-			new ProcessMessage(explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage).run();
+			new TreatMessage(explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage).run();
 			break;
 
 		default:
