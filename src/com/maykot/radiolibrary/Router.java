@@ -32,7 +32,13 @@ public class Router implements IExplicitDataReceiveListener {
 
 		int dataSize = dataToSend.length;
 		int firstBytePosition = 0;
-		int lastBytePosition = MessageParameter.PAYLOAD_SIZE;
+		int lastBytePosition = 0;
+
+		if (dataSize >= MessageParameter.PAYLOAD_SIZE) {
+			lastBytePosition = MessageParameter.PAYLOAD_SIZE;
+		} else {
+			lastBytePosition = dataSize;
+		}
 		int count = 0;
 
 		// Calcula a quantidade de fragmentos para enviar
@@ -56,13 +62,13 @@ public class Router implements IExplicitDataReceiveListener {
 		// 5º: define a posição inicial do fragmento no byte[] da mensagem
 		// original.
 		// 6º: byte[] com fragmento da mensagem original.
-		myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_INIT, contentType, dataSize,
-				firstBytePosition, noMessage);
+		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_INIT, contentType, dataSize, firstBytePosition,
+				noMessage);
 
 		do {
 			byte[] fragmentOfData = Arrays.copyOfRange(dataToSend, firstBytePosition, lastBytePosition);
 
-			myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_DATA, contentType, dataSize,
+			myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_DATA, contentType, dataSize,
 					firstBytePosition, fragmentOfData);
 			fragmentArray[count] = fragmentOfData;
 			firstBytePosition = lastBytePosition;
@@ -76,8 +82,7 @@ public class Router implements IExplicitDataReceiveListener {
 		// Armazena os fragmentos em cache
 		CacheMessage.getInstance().addMessage(new Date().getTime(), fragmentArray);
 
-		myDevice.sendExplicitData(remoteDevice, MessageParameter.ENDPOINT_SEND_END, contentType, qtdPackages, 0,
-				noMessage);
+		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_END, contentType, qtdPackages, 0, noMessage);
 	}
 
 	public void processMyMessage(IProcessMessage iProcessMessage) {

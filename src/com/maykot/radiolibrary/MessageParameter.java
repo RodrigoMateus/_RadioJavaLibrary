@@ -9,12 +9,9 @@ public final class MessageParameter {
 	// Parâmetros usados em ExplicitXBeeMessage
 	public static final int CLUSTER_ID = 0;
 	public static final int PROFILE_ID = 0;
-	public static final int ENDPOINT_SEND_INIT = 11;
-	public static final int ENDPOINT_SEND_DATA = 12;
-	public static final int ENDPOINT_SEND_END = 13;
-	public static final int ENDPOINT_RESPONSE_INIT = 21;
-	public static final int ENDPOINT_RESPONSE_DATA = 22;
-	public static final int ENDPOINT_RESPONSE_END = 33;
-	public static final int ENDPOINT_TXT = 41;
-
+	public static final int MESSAGE_INIT = 11;
+	public static final int MESSAGE_DATA = 12;
+	public static final int MESSAGE_END = 13;
+	public static final int SEND_TXT_FILE = 21;
+	public static final int CONFIRM_TXT_FILE = 22;
 }

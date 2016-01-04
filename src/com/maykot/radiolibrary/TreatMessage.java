@@ -1,12 +1,16 @@
 package com.maykot.radiolibrary;
 
+import com.digi.xbee.api.RemoteXBeeDevice;
+
 public class TreatMessage extends Thread {
 
 	private int contentType;
 	private byte[] message;
+	private RemoteXBeeDevice sourceDeviceAddress;
 
-	public TreatMessage(int contentType, byte[] message) {
+	public TreatMessage(RemoteXBeeDevice sourceDeviceAddress2, int contentType, byte[] message) {
 		super();
+		this.sourceDeviceAddress = sourceDeviceAddress2;
 		this.contentType = contentType;
 		this.message = message;
 	}
@@ -16,8 +20,12 @@ public class TreatMessage extends Thread {
 		super.run();
 
 		switch (contentType) {
-		case MessageParameter.ENDPOINT_TXT:
-			Router.getInstance().getIProcessMessage().textMessageReceived(message);
+		case MessageParameter.SEND_TXT_FILE:
+			Router.getInstance().getIProcessMessage().textMessageReceived(sourceDeviceAddress, message);
+			break;
+
+		case MessageParameter.CONFIRM_TXT_FILE:
+			Router.getInstance().getIProcessMessage().textMessageConfirm(message);
 			break;
 
 		default:

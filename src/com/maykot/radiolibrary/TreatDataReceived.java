@@ -2,11 +2,12 @@ package com.maykot.radiolibrary;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.digi.xbee.api.RemoteXBeeDevice;
 import com.digi.xbee.api.models.ExplicitXBeeMessage;
 
 public class TreatDataReceived {
 
-	ConcurrentHashMap<String, byte[]> messageHashmap = new ConcurrentHashMap<String, byte[]>();
+	ConcurrentHashMap<RemoteXBeeDevice, byte[]> messageHashmap = new ConcurrentHashMap<RemoteXBeeDevice, byte[]>();
 
 	// Métodos de ExplicitXBeeMessage:
 	// .getDevice(): retorna device de destino da mensagem.
@@ -16,37 +17,37 @@ public class TreatDataReceived {
 	// .getProfileID() retorna a posição inicial do fragmento no byte[] da
 	// mensagem original.
 	// .getData() retorna o byte[] com fragmento da mensagem original
-	ExplicitXBeeMessage explicitXBeeMessage;
 
 	public void processDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
 		byte[] byteArrayMessage;
-		this.explicitXBeeMessage = explicitXBeeMessage;
+		RemoteXBeeDevice sourceDeviceAddress = explicitXBeeMessage.getDevice();
 
-		if (messageHashmap.containsKey(explicitXBeeMessage.getDevice().get64BitAddress().toString())) {
-			byteArrayMessage = messageHashmap.get(explicitXBeeMessage.getDevice().get64BitAddress().toString());
+		if (messageHashmap.containsKey(sourceDeviceAddress)) {
+			byteArrayMessage = messageHashmap.get(sourceDeviceAddress);
 		} else {
 			byteArrayMessage = new byte[explicitXBeeMessage.getClusterID()];
-			messageHashmap.put(explicitXBeeMessage.getDevice().get64BitAddress().toString(), byteArrayMessage);
+			messageHashmap.put(sourceDeviceAddress, byteArrayMessage);
 		}
 
 		int endPoint = explicitXBeeMessage.getSourceEndpoint();
 
 		switch (endPoint) {
 
-		case MessageParameter.ENDPOINT_SEND_INIT:
-			System.out.println("ENDPOINT_SEND_INIT");
+		case MessageParameter.MESSAGE_INIT:
+			System.out.println("MESSAGE_INIT");
 			break;
 
-		case MessageParameter.ENDPOINT_SEND_DATA:
+		case MessageParameter.MESSAGE_DATA:
 			System.out.println("Inserir na posição " + explicitXBeeMessage.getProfileID());
 			System.arraycopy(explicitXBeeMessage.getData(), 0, byteArrayMessage, explicitXBeeMessage.getProfileID(),
 					explicitXBeeMessage.getData().length);
-			messageHashmap.put(explicitXBeeMessage.getDevice().get64BitAddress().toString(), byteArrayMessage);
+			messageHashmap.put(sourceDeviceAddress, byteArrayMessage);
 			break;
 
-		case MessageParameter.ENDPOINT_SEND_END:
-			messageHashmap.remove(explicitXBeeMessage.getDevice().get64BitAddress().toString());
-			new TreatMessage(explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage).run();
+		case MessageParameter.MESSAGE_END:
+			messageHashmap.remove(sourceDeviceAddress);
+			new TreatMessage(sourceDeviceAddress, explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage).run();
+			System.out.println("MESSAGE_END");
 			break;
 
 		default:
