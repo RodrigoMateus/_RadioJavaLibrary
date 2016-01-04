@@ -21,11 +21,11 @@ public class TreatMessage extends Thread {
 
 		switch (contentType) {
 		case MessageParameter.SEND_TXT_FILE:
-			Router.getInstance().getIProcessMessage().textMessageReceived(sourceDeviceAddress, message);
+			Router.getInstance().getIProcessMessage().textFileReceived(sourceDeviceAddress, message);
 			break;
 
 		case MessageParameter.CONFIRM_TXT_FILE:
-			Router.getInstance().getIProcessMessage().textMessageConfirm(message);
+			Router.getInstance().getIProcessMessage().textFileConfirm(message);
 			break;
 
 		default:
