@@ -6,6 +6,7 @@ import com.digi.xbee.api.utils.HexUtils;
 public enum ErrorMessage {
 
 	// Enumeration entries
+	OK(200, "OK"),
 	NOT_VERB(600, "Not a verb"), 
 	INVALID_PROXY_REQUEST(601, "Invalid Proxy Request"), 
 	REQUEST_PROBLEM(602, "Request problem"), 

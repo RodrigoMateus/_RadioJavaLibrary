@@ -14,4 +14,6 @@ public final class MessageParameter {
 	public static final int MESSAGE_END = 13;
 	public static final int SEND_TXT_FILE = 21;
 	public static final int CONFIRM_TXT_FILE = 22;
+	public static final int SEND_HTTP_POST = 23;
+	public static final int CONFIRM_HTTP_POST = 24;
 }

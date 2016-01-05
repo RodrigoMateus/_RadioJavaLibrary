@@ -28,6 +28,14 @@ public class TreatMessage extends Thread {
 			Router.getInstance().getIProcessMessage().textFileConfirm(message);
 			break;
 
+		case MessageParameter.SEND_HTTP_POST:
+			Router.getInstance().getIProcessMessage().httpPostReceived(sourceDeviceAddress, message);
+			break;
+
+		case MessageParameter.CONFIRM_HTTP_POST:
+			Router.getInstance().getIProcessMessage().httpPostConfirm(message);
+			break;
+
 		default:
 			break;
 		}

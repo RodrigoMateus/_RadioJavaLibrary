@@ -6,11 +6,15 @@ import java.util.HashMap;
 public class ProxyRequest implements Serializable {
 
 	private static final long serialVersionUID = -4707248583815599159L;
+	private String verb;
 	private String url;
 	private HashMap<String, String> header;
 	private String idMessage;
-	private String verb;
 	private byte[] body;
+
+	public String getVerb() { return verb; }
+
+	public void setVerb(String verb) { this.verb = verb; }
 
 	public String getUrl() { return url; }
 
@@ -23,10 +27,6 @@ public class ProxyRequest implements Serializable {
 	public String getIdMessage() { return idMessage; }
 
 	public void setIdMessage(String idMessage) { this.idMessage = idMessage; }
-
-	public String getVerb() { return verb; }
-
-	public void setVerb(String verb) { this.verb = verb; }
 
 	public byte[] getBody() { return body; }
 
