@@ -46,7 +46,8 @@ public class TreatDataReceived {
 
 		case MessageParameter.MESSAGE_END:
 			messageHashmap.remove(sourceDeviceAddress);
-			new TreatMessage(sourceDeviceAddress, explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage).run();
+			new TreatMessage(sourceDeviceAddress, explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage)
+					.start();
 			System.out.println("MESSAGE_END");
 			break;
 

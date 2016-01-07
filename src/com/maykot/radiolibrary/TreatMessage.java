@@ -7,9 +7,14 @@ public class TreatMessage extends Thread {
 	private int contentType;
 	private byte[] message;
 	private RemoteXBeeDevice sourceDeviceAddress;
+	private RouterRadio routerRadio;
+
+	public TreatMessage(RouterRadio routerRadio) {
+		this.routerRadio = routerRadio;
+	}
 
 	public TreatMessage(RemoteXBeeDevice sourceDeviceAddress, int contentType, byte[] message) {
-		super();
+		this(RouterRadio.getInstance());
 		this.sourceDeviceAddress = sourceDeviceAddress;
 		this.contentType = contentType;
 		this.message = message;
@@ -21,19 +26,19 @@ public class TreatMessage extends Thread {
 
 		switch (contentType) {
 		case MessageParameter.SEND_TXT_FILE:
-			RouterRadio.getInstance().getIProcessMessage().textFileReceived(sourceDeviceAddress, message);
+			routerRadio.getIProcessMessage().textFileReceived(sourceDeviceAddress, message);
 			break;
 
 		case MessageParameter.CONFIRM_TXT_FILE:
-			RouterRadio.getInstance().getIProcessMessage().textFileConfirm(message);
+			routerRadio.getIProcessMessage().textFileConfirm(message);
 			break;
 
 		case MessageParameter.SEND_HTTP_POST:
-			RouterRadio.getInstance().getIProcessMessage().httpPostReceived(sourceDeviceAddress, message);
+			routerRadio.getIProcessMessage().httpPostReceived(sourceDeviceAddress, message);
 			break;
 
 		case MessageParameter.CONFIRM_HTTP_POST:
-			RouterRadio.getInstance().getIProcessMessage().httpPostConfirm(message);
+			routerRadio.getIProcessMessage().httpPostConfirm(message);
 			break;
 
 		default:
