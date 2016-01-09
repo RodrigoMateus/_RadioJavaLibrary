@@ -2,8 +2,8 @@ package com.maykot.radiolibrary;
 
 import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.models.APIOutputMode;
-import com.digi.xbee.api.utils.DeviceConfig;
 import com.digi.xbee.api.utils.SerialPorts;
+import com.maykot.utils.DeviceConfig;
 
 public class OpenMyDevice {
 

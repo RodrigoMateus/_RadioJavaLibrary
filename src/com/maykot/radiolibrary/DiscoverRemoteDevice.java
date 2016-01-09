@@ -6,7 +6,7 @@ import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
 import com.digi.xbee.api.XBeeNetwork;
 import com.digi.xbee.api.exceptions.XBeeException;
-import com.digi.xbee.api.utils.DeviceConfig;
+import com.maykot.utils.DeviceConfig;
 
 public class DiscoverRemoteDevice {
 

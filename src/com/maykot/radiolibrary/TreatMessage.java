@@ -9,15 +9,15 @@ public class TreatMessage extends Thread {
 	private RemoteXBeeDevice sourceDeviceAddress;
 	private RouterRadio routerRadio;
 
-	public TreatMessage(RouterRadio routerRadio) {
-		this.routerRadio = routerRadio;
-	}
-
 	public TreatMessage(RemoteXBeeDevice sourceDeviceAddress, int contentType, byte[] message) {
 		this(RouterRadio.getInstance());
 		this.sourceDeviceAddress = sourceDeviceAddress;
 		this.contentType = contentType;
 		this.message = message;
+	}
+
+	private TreatMessage(RouterRadio routerRadio) {
+		this.routerRadio = routerRadio;
 	}
 
 	@Override
