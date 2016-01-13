@@ -2,73 +2,74 @@ package com.maykot.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class DeviceConfig {
 
 	private static DeviceConfig uniqueInstance;
-	private static Properties properties;
+	HashMap<String, String> propertiesHashMap = new HashMap<String, String>();
 
-	private DeviceConfig() throws IOException {
-		FileInputStream file = new FileInputStream("DeviceConfig.properties");
-		properties = new Properties();
-		properties.load(file);
+	private DeviceConfig() {
+		Properties properties = new Properties();
+		try {
+			FileInputStream file = new FileInputStream("DeviceConfig.properties");
+			properties.load(file);
+		} catch (IOException e1) {
+			System.out.println("File DeviceConfig.properties NOT found!");
+		}
+
+		for (String key : properties.stringPropertyNames()) {
+			String value = properties.getProperty(key);
+			propertiesHashMap.put(key, value);
+		}
 	}
 
-	public static DeviceConfig getInstance() throws IOException {
+	public static DeviceConfig getInstance() {
 		if (uniqueInstance == null) {
 			uniqueInstance = new DeviceConfig();
 		}
 		return uniqueInstance;
 	}
 
-	public String getXTendPort() throws IOException {
-		String port = properties.getProperty("XTendPort");
-		return port;
+	public String getXTendPort() {
+		return propertiesHashMap.get("XTendPort");
 	}
 
-	public int getXTendBaudRate() throws IOException {
-		int baudRate = Integer.parseInt(properties.getProperty("XTendBaudRate"));
-		return baudRate;
+	public int getXTendBaudRate() {
+		return Integer.parseInt(propertiesHashMap.get("XTendBaudRate"));
 	}
 
-	public int getTimeOutForSyncOperations() throws IOException {
-		int timeout = Integer.parseInt(properties.getProperty("TimeOutForSyncOperations"));
-		return timeout;
+	public int getTimeOutForSyncOperations() {
+		return Integer.parseInt(propertiesHashMap.get("TimeOutForSyncOperations"));
 	}
 
-	public String getXBeePort() throws IOException {
-		String port = properties.getProperty("XBeePort");
-		return port;
+	public String getXbeePort() {
+		return propertiesHashMap.get("XBeePort");
 	}
 
-	public int getXBeeBaudRate() throws IOException {
-		int baudRate = Integer.parseInt(properties.getProperty("XBeeBaudRate"));
-		return baudRate;
+	public int getXbeeBaudRate() {
+		return Integer.parseInt(propertiesHashMap.get("XBeeBaudRate"));
 	}
 
-	public String getBrokerURL() throws IOException {
-		String routerIP = properties.getProperty("BrokerURL");
-		return routerIP;
+	public String getBrokerURL() {
+		return propertiesHashMap.get("BrokerURL");
 	}
 
-	public String getRemoteNodeID() throws IOException {
-		String remoteNodeID = properties.getProperty("RemoteNodeID");
-		return remoteNodeID;
+	public String getRemoteNodeID() {
+		return propertiesHashMap.get("RemoteNodeID");
 	}
 
-	public String getClientId() throws IOException {
-		String routerIP = properties.getProperty("ClientId");
-		return routerIP;
+	public String getClientId() {
+		return propertiesHashMap.get("ClientId");
 	}
 
-	public String getSubscribedTopic() throws IOException {
-		String routerIP = properties.getProperty("SubscribedTopic");
-		return routerIP;
+	public String getSubscribedTopic() {
+		return propertiesHashMap.get("SubscribedTopic");
 	}
 
-	public int getQoS() throws IOException {
-		int qos = Integer.parseInt(properties.getProperty("QoS"));
-		return qos;
+	public int getQoS() {
+		return Integer.parseInt(propertiesHashMap.get("QoS"));
 	}
+
 }

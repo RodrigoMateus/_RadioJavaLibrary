@@ -1,7 +1,5 @@
 package com.maykot.mqtt;
 
-import java.io.IOException;
-
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -12,31 +10,35 @@ import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
 import com.maykot.utils.DeviceConfig;
 
-public class RouterMqtt implements MqttCallback {
+public class MqttRouter implements MqttCallback {
 
-	private DeviceConfig deviceConfig;
-	private MqttClient mqttClient;
-	private TreatMqttMessage treatMqttMessage;
+	private static MqttRouter uniqueInstance;
 	private DigiMeshDevice myDevice;
 	private RemoteXBeeDevice remoteDevice;
+	private MqttClient mqttClient;
+	private TreatMqttMessage treatMqttMessage;
 
-	public RouterMqtt(DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice) throws IOException {
-		this(DeviceConfig.getInstance());
+	private MqttRouter() {
+	}
+
+	public static MqttRouter getInstance() {
+		if (uniqueInstance == null) {
+			uniqueInstance = new MqttRouter();
+		}
+		return uniqueInstance;
+	}
+
+	public void setMqttRouter(DeviceConfig deviceConfig, DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice)
+			throws MqttException {
 		this.myDevice = myDevice;
 		this.remoteDevice = remoteDevice;
-		treatMqttMessage = new TreatMqttMessage();
-	}
 
-	private RouterMqtt(DeviceConfig deviceConfig) {
-		this.deviceConfig = deviceConfig;
-	}
-
-	public MqttClient connect() throws IOException, MqttException {
 		mqttClient = new MqttClient(deviceConfig.getBrokerURL(), deviceConfig.getClientId(), null);
 		mqttClient.setCallback(this);
 		mqttClient.connect();
 		mqttClient.subscribe(deviceConfig.getSubscribedTopic(), deviceConfig.getQoS());
-		return mqttClient;
+
+		treatMqttMessage = new TreatMqttMessage();
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class RouterMqtt implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		treatMqttMessage.processMessage(myDevice, remoteDevice, topic, message);
+		treatMqttMessage.processMessage(mqttClient, myDevice, remoteDevice, topic, message);
 	}
 
 }

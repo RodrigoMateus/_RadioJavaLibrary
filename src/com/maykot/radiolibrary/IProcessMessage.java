@@ -8,8 +8,12 @@ public interface IProcessMessage {
 
 	public void textFileConfirm(byte[] message);
 
-	public void httpPostReceived(RemoteXBeeDevice sourceDeviceAddress, byte[] message);
+	public void localPostReceived(RemoteXBeeDevice sourceDeviceAddress, byte[] message);
 
-	void httpPostConfirm(byte[] message);
+	public void localPostConfirm(byte[] message);
+
+	public void mobilePostReceived(RemoteXBeeDevice sourceDeviceAddress, byte[] message);
+
+	public void mobilePostConfirm(byte[] message);
 
 }
