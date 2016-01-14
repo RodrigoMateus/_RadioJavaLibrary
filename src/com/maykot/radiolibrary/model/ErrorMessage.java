@@ -1,4 +1,4 @@
-package com.maykot.radiolibrary;
+package com.maykot.radiolibrary.model;
 
 import java.util.HashMap;
 import com.digi.xbee.api.utils.HexUtils;

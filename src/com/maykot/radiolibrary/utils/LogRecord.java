@@ -1,4 +1,4 @@
-package com.maykot.utils;
+package com.maykot.radiolibrary.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;

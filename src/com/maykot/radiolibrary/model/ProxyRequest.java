@@ -1,4 +1,4 @@
-package com.maykot.radiolibrary;
+package com.maykot.radiolibrary.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ public class ProxyRequest implements Serializable {
 	private String verb;
 	private String url;
 	private HashMap<String, String> header;
+	private String mqttClientId;
 	private String idMessage;
 	private byte[] body;
 
@@ -24,6 +25,10 @@ public class ProxyRequest implements Serializable {
 
 	public void setHeader(HashMap<String, String> header) { this.header = header; }
 	
+	public String getMqttClientId() { return mqttClientId; }
+
+	public void setMqttClientId(String mqttClientId) { this.mqttClientId = mqttClientId; }
+
 	public String getIdMessage() { return idMessage; }
 
 	public void setIdMessage(String idMessage) { this.idMessage = idMessage; }

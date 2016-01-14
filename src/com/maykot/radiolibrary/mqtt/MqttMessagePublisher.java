@@ -1,4 +1,4 @@
-package com.maykot.mqtt;
+package com.maykot.radiolibrary.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -9,16 +9,20 @@ public class MqttMessagePublisher extends Thread {
 
 	private MqttClient mqttClient;
 	private String topic;
-	private MqttMessage mqttMessage;
+	private byte[] message;
 
-	public MqttMessagePublisher(MqttClient mqttClient, String topic, MqttMessage mqttMessage) {
+	public MqttMessagePublisher(MqttClient mqttClient, String topic, byte[] message) {
 		this.mqttClient = mqttClient;
 		this.topic = topic;
-		this.mqttMessage = mqttMessage;
+		this.message = message;
 	}
 
 	@Override
 	public void run() {
+
+		MqttMessage mqttMessage = new MqttMessage();
+		mqttMessage.setPayload(message);
+
 		try {
 			mqttClient.publish(topic, mqttMessage);
 		} catch (MqttPersistenceException e) {

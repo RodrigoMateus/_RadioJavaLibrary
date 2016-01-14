@@ -1,4 +1,4 @@
-package com.maykot.radiolibrary;
+package com.maykot.radiolibrary.model;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ public class ProxyResponse implements Serializable {
 	private String idMessage;
 	private byte[] body;
 
-	public ProxyResponse(int statusCode, String contentType, byte[] body) {
+	public ProxyResponse(int statusCode, byte[] body) {
 		super();
 		this.statusCode = statusCode;
 		this.body = body;

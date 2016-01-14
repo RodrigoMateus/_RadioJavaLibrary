@@ -1,4 +1,4 @@
-package com.maykot.radiolibrary;
+package com.maykot.radiolibrary.model;
 
 public final class MessageParameter {
 

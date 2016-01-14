@@ -1,4 +1,4 @@
-package com.maykot.mqtt;
+package com.maykot.radiolibrary.mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -8,7 +8,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
-import com.maykot.utils.DeviceConfig;
+import com.maykot.radiolibrary.utils.DeviceConfig;
 
 public class MqttRouter implements MqttCallback {
 
@@ -16,7 +16,7 @@ public class MqttRouter implements MqttCallback {
 	private DigiMeshDevice myDevice;
 	private RemoteXBeeDevice remoteDevice;
 	private MqttClient mqttClient;
-	private TreatMqttMessage treatMqttMessage;
+	private MqttMessageHandler mqttMessageHandler;
 
 	private MqttRouter() {
 	}
@@ -28,17 +28,19 @@ public class MqttRouter implements MqttCallback {
 		return uniqueInstance;
 	}
 
-	public void setMqttRouter(DeviceConfig deviceConfig, DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice)
+	public MqttClient setMqttRouter(DeviceConfig deviceConfig, DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice)
 			throws MqttException {
 		this.myDevice = myDevice;
 		this.remoteDevice = remoteDevice;
 
-		mqttClient = new MqttClient(deviceConfig.getBrokerURL(), deviceConfig.getClientId(), null);
+		mqttClient = new MqttClient(deviceConfig.getBrokerURL(), "MqttRouter_" + myDevice.getNodeID(), null);
 		mqttClient.setCallback(this);
 		mqttClient.connect();
-		mqttClient.subscribe(deviceConfig.getSubscribedTopic(), deviceConfig.getQoS());
+		mqttClient.subscribe("maykot/request/#", deviceConfig.getQoS());
 
-		treatMqttMessage = new TreatMqttMessage();
+		mqttMessageHandler = new MqttMessageHandler();
+
+		return mqttClient;
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class MqttRouter implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		treatMqttMessage.processMessage(mqttClient, myDevice, remoteDevice, topic, message);
+		mqttMessageHandler.processMessage(mqttClient, myDevice, remoteDevice, topic, message);
 	}
 
 }

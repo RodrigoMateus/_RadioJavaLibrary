@@ -1,4 +1,4 @@
-package com.maykot.utils;
+package com.maykot.radiolibrary.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,14 +58,6 @@ public class DeviceConfig {
 
 	public String getRemoteNodeID() {
 		return propertiesHashMap.get("RemoteNodeID");
-	}
-
-	public String getClientId() {
-		return propertiesHashMap.get("ClientId");
-	}
-
-	public String getSubscribedTopic() {
-		return propertiesHashMap.get("SubscribedTopic");
 	}
 
 	public int getQoS() {

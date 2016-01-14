@@ -10,6 +10,8 @@ import com.digi.xbee.api.exceptions.TimeoutException;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IExplicitDataReceiveListener;
 import com.digi.xbee.api.models.ExplicitXBeeMessage;
+import com.maykot.radiolibrary.interfaces.IProcessMessage;
+import com.maykot.radiolibrary.model.MessageParameter;
 
 public class RadioRouter implements IExplicitDataReceiveListener {
 
@@ -123,7 +125,7 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 
 		case MessageParameter.MESSAGE_END:
 			messageHashmap.remove(sourceDeviceAddress);
-			new TreatMessage(sourceDeviceAddress, explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage)
+			new MessageHandler(sourceDeviceAddress, explicitXBeeMessage.getDestinationEndpoint(), byteArrayMessage)
 					.start();
 			System.out.println("MESSAGE_END");
 			break;

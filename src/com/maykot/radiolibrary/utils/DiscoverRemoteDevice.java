@@ -1,4 +1,4 @@
-package com.maykot.utils;
+package com.maykot.radiolibrary.utils;
 
 import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
