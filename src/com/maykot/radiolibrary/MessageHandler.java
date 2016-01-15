@@ -27,27 +27,27 @@ public class MessageHandler extends Thread {
 
 		switch (contentType) {
 		case MessageParameter.SEND_TXT_FILE:
-			radioRouter.getIProcessMessage().textFileReceived(sourceDeviceAddress, message);
+			radioRouter.getProcessMessage().textFileReceived(sourceDeviceAddress, message);
 			break;
 
 		case MessageParameter.CONFIRM_TXT_FILE:
-			radioRouter.getIProcessMessage().textFileConfirm(message);
+			radioRouter.getProcessMessage().textFileConfirm(message);
 			break;
 
 		case MessageParameter.SEND_LOCAL_POST:
-			radioRouter.getIProcessMessage().localPostReceived(sourceDeviceAddress, message);
+			radioRouter.getProcessMessage().localPostReceived(sourceDeviceAddress, message);
 			break;
 
 		case MessageParameter.CONFIRM_LOCAL_POST:
-			radioRouter.getIProcessMessage().localPostConfirm(message);
+			radioRouter.getProcessMessage().localPostConfirm(message);
 			break;
 
 		case MessageParameter.SEND_MOBILE_POST:
-			radioRouter.getIProcessMessage().mobilePostReceived(sourceDeviceAddress, message);
+			radioRouter.getProcessMessage().mobilePostReceived(sourceDeviceAddress, message);
 			break;
 
 		case MessageParameter.CONFIRM_MOBILE_POST:
-			radioRouter.getIProcessMessage().mobilePostConfirm(message);
+			radioRouter.getProcessMessage().mobilePostConfirm(message);
 			break;
 
 		default:

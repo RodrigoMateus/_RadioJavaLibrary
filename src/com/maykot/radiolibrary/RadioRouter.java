@@ -16,7 +16,7 @@ import com.maykot.radiolibrary.model.MessageParameter;
 public class RadioRouter implements IExplicitDataReceiveListener {
 
 	private static RadioRouter uniqueInstance;
-	private IProcessMessage iProcessMessage;
+	private IProcessMessage processMessage;
 	private ConcurrentHashMap<RemoteXBeeDevice, byte[]> messageHashmap = new ConcurrentHashMap<RemoteXBeeDevice, byte[]>();
 
 	private RadioRouter() {
@@ -135,11 +135,11 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 		}
 	}
 
-	public void addProcessMessageListener(IProcessMessage iProcessMessage) {
-		this.iProcessMessage = iProcessMessage;
+	public void addProcessMessageListener(IProcessMessage processMessage) {
+		this.processMessage = processMessage;
 	}
 
-	public IProcessMessage getIProcessMessage() {
-		return iProcessMessage;
+	public IProcessMessage getProcessMessage() {
+		return processMessage;
 	}
 }
