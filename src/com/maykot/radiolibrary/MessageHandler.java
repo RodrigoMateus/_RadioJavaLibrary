@@ -26,6 +26,15 @@ public class MessageHandler extends Thread {
 		super.run();
 
 		switch (contentType) {
+
+		case MessageParameter.SEND_CLIENT_CONNECTION:
+			radioRouter.getProcessMessage().clientConnectionReceived(sourceDeviceAddress, message);
+			break;
+
+		case MessageParameter.CONFIRM_CLIENT_CONNECTION:
+			radioRouter.getProcessMessage().clientConnectionConfirm(message);
+			break;
+
 		case MessageParameter.SEND_TXT_FILE:
 			radioRouter.getProcessMessage().textFileReceived(sourceDeviceAddress, message);
 			break;

@@ -4,6 +4,10 @@ import com.digi.xbee.api.RemoteXBeeDevice;
 
 public interface IProcessMessage {
 
+	public void clientConnectionReceived(RemoteXBeeDevice sourceDeviceAddress, byte[] message);
+
+	public void clientConnectionConfirm(byte[] message);
+
 	public void textFileReceived(RemoteXBeeDevice sourceDeviceAddress, byte[] message);
 
 	public void textFileConfirm(byte[] message);

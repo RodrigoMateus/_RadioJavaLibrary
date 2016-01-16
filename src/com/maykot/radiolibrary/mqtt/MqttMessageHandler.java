@@ -1,5 +1,8 @@
 package com.maykot.radiolibrary.mqtt;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -11,6 +14,7 @@ import com.digi.xbee.api.exceptions.XBeeException;
 import com.maykot.radiolibrary.RadioRouter;
 import com.maykot.radiolibrary.model.ErrorMessage;
 import com.maykot.radiolibrary.model.MessageParameter;
+import com.maykot.radiolibrary.utils.LogRecord;
 
 public class MqttMessageHandler {
 
@@ -40,6 +44,11 @@ public class MqttMessageHandler {
 		case "request":
 			try {
 				radioRouter.sendMessage(myDevice, remoteDevice, MessageParameter.SEND_MOBILE_POST, dataToSend);
+
+				// Registro da hora de envio de uma mensagem vinda do App Móvel
+				LogRecord.insertLog("MobileRequestLog", new String(clientId + ";" + messageId + ";"
+						+ new String(new SimpleDateFormat("yyyy-MM-dd;HH:mm:ss:SSS").format(new Date()))));
+
 			} catch (TransmitException e) {
 				System.out.println(
 						ErrorMessage.TRANSMIT_EXCEPTION.value() + ": " + ErrorMessage.TRANSMIT_EXCEPTION.description());
@@ -55,6 +64,12 @@ public class MqttMessageHandler {
 						+ ErrorMessage.XBEE_EXCEPTION_ERROR.description());
 				new ProxyResponseSender().sendErrorMessage(mqttClient, clientId, messageId,
 						ErrorMessage.XBEE_EXCEPTION_ERROR.value(), ErrorMessage.XBEE_EXCEPTION_ERROR.description());
+			} catch (IllegalArgumentException e) {
+				System.out.println("Erro " + ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.value() + ": "
+						+ ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.description());
+				new ProxyResponseSender().sendErrorMessage(mqttClient, clientId, messageId,
+						ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.value(),
+						ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.description());
 			} catch (Exception e) {
 				System.out.println("Erro " + ErrorMessage.EXCEPTION_ERROR.value() + ": "
 						+ ErrorMessage.EXCEPTION_ERROR.description());

@@ -14,6 +14,7 @@ public enum ErrorMessage {
 	TIMEOUT_ERROR(604, "Timeout error"), 
 	XBEE_EXCEPTION_ERROR(605, "XBeeException error"), 
 	EXCEPTION_ERROR(606, "Exception error"), 
+	ILLEGAL_ARGUMENT_EXCEPTION(607, "IllegalArgumentException"), 
 	UNKNOWN_ERROR(0, "Unknown error");
 
 	// Variables
