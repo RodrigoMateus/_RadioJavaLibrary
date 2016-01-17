@@ -3,6 +3,7 @@ package com.maykot.radiolibrary.mqtt;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -14,6 +15,7 @@ import com.digi.xbee.api.exceptions.XBeeException;
 import com.maykot.radiolibrary.RadioRouter;
 import com.maykot.radiolibrary.model.ErrorMessage;
 import com.maykot.radiolibrary.model.MessageParameter;
+import com.maykot.radiolibrary.model.ProxyRequest;
 import com.maykot.radiolibrary.utils.LogRecord;
 
 public class MqttMessageHandler {
@@ -43,12 +45,14 @@ public class MqttMessageHandler {
 		switch (contentType) {
 		case "request":
 			try {
-				radioRouter.sendMessage(myDevice, remoteDevice, MessageParameter.SEND_MOBILE_POST, dataToSend);
+				ProxyRequest proxyRequest = (ProxyRequest) SerializationUtils.deserialize(dataToSend);
 
 				// Registro da hora de envio de uma mensagem vinda do App Móvel
-				LogRecord.insertLog("MobileRequestLog", new String(clientId + ";" + messageId + ";"
-						+ new String(new SimpleDateFormat("yyyy-MM-dd;HH:mm:ss:SSS").format(new Date()))));
-
+				LogRecord.insertLog("MobileRequest_RouterLog",
+						new String(clientId + ";" + messageId + ";"
+								+ new String(new SimpleDateFormat("yyyy-MM-dd;HH:mm:ss:SSS").format(new Date())) + ";"
+								+ new String(proxyRequest.getBody())));
+				radioRouter.sendMessage(myDevice, remoteDevice, MessageParameter.SEND_MOBILE_POST, dataToSend);
 			} catch (TransmitException e) {
 				System.out.println(
 						ErrorMessage.TRANSMIT_EXCEPTION.value() + ": " + ErrorMessage.TRANSMIT_EXCEPTION.description());

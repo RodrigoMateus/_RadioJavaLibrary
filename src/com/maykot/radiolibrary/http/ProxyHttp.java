@@ -3,6 +3,8 @@ package com.maykot.radiolibrary.http;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.apache.http.Header;
@@ -51,12 +53,13 @@ public class ProxyHttp {
 
 			System.out.println(proxyResponse.toString());
 
+			LogRecord.insertLog("MobileRequest_ServerLog",
+					new String(proxyRequest.getMqttClientId() + ";" + proxyRequest.getIdMessage() + ";"
+							+ new String(new SimpleDateFormat("yyyy-MM-dd;HH:mm:ss:SSS").format(new Date())) + ";"
+							+ new String(proxyRequest.getBody())));
 		} catch (IOException ex) {
 			System.out.println("ERRO Proxy");
 		}
-
-		LogRecord.insertLog("localhost", new String(proxyRequest.getBody()));
-
 		return proxyResponse;
 	}
 

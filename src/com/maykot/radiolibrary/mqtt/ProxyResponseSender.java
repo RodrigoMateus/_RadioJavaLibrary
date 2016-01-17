@@ -23,6 +23,10 @@ public class ProxyResponseSender {
 		byte[] message = SerializationUtils.serialize(proxyResponse);
 
 		new MqttMessagePublisher(mqttClient, topic, message).start();
+
+		// Registro da hora de envio de uma mensagem de erro
+		LogRecord.insertLog("MobileError_RouterLog", new String(clientId + ";" + messageId + ";"
+				+ new String(new SimpleDateFormat("yyyy-MM-dd;HH:mm:ss:SSS").format(new Date()))));
 	}
 
 	public void sendResponseMessage(MqttClient mqttClient, String clientId, String messageId, byte[] message) {
@@ -32,9 +36,8 @@ public class ProxyResponseSender {
 		new MqttMessagePublisher(mqttClient, topic, message).start();
 
 		// Registro da hora de envio de uma mensagem vinda do App Móvel
-		LogRecord.insertLog("MobileResponseLog", new String(clientId + ";" + messageId + ";"
+		LogRecord.insertLog("MobileResponse_RouterLog", new String(clientId + ";" + messageId + ";"
 				+ new String(new SimpleDateFormat("yyyy-MM-dd;HH:mm:ss:SSS").format(new Date()))));
-
 	}
 
 }
