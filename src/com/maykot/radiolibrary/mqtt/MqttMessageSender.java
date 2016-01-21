@@ -9,7 +9,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import com.maykot.radiolibrary.model.ProxyResponse;
 import com.maykot.radiolibrary.utils.LogRecord;
 
-public class ProxyResponseSender {
+public class MqttMessageSender {
 
 	public void sendErrorMessage(MqttClient mqttClient, String clientId, String messageId, int errorCode,
 			String errorDescription) {

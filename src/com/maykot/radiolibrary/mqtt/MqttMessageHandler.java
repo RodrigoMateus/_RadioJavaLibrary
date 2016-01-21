@@ -56,28 +56,28 @@ public class MqttMessageHandler {
 			} catch (TransmitException e) {
 				System.out.println(
 						ErrorMessage.TRANSMIT_EXCEPTION.value() + ": " + ErrorMessage.TRANSMIT_EXCEPTION.description());
-				new ProxyResponseSender().sendErrorMessage(mqttClient, clientId, messageId,
+				new MqttMessageSender().sendErrorMessage(mqttClient, clientId, messageId,
 						ErrorMessage.TRANSMIT_EXCEPTION.value(), ErrorMessage.TRANSMIT_EXCEPTION.description());
 			} catch (TimeoutException e) {
 				System.out.println(
 						"Erro " + ErrorMessage.TIMEOUT_ERROR.value() + ": " + ErrorMessage.TIMEOUT_ERROR.description());
-				new ProxyResponseSender().sendErrorMessage(mqttClient, clientId, messageId,
+				new MqttMessageSender().sendErrorMessage(mqttClient, clientId, messageId,
 						ErrorMessage.TIMEOUT_ERROR.value(), ErrorMessage.TIMEOUT_ERROR.description());
 			} catch (XBeeException e) {
 				System.out.println("Erro " + ErrorMessage.XBEE_EXCEPTION_ERROR.value() + ": "
 						+ ErrorMessage.XBEE_EXCEPTION_ERROR.description());
-				new ProxyResponseSender().sendErrorMessage(mqttClient, clientId, messageId,
+				new MqttMessageSender().sendErrorMessage(mqttClient, clientId, messageId,
 						ErrorMessage.XBEE_EXCEPTION_ERROR.value(), ErrorMessage.XBEE_EXCEPTION_ERROR.description());
 			} catch (IllegalArgumentException e) {
 				System.out.println("Erro " + ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.value() + ": "
 						+ ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.description());
-				new ProxyResponseSender().sendErrorMessage(mqttClient, clientId, messageId,
+				new MqttMessageSender().sendErrorMessage(mqttClient, clientId, messageId,
 						ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.value(),
 						ErrorMessage.ILLEGAL_ARGUMENT_EXCEPTION.description());
 			} catch (Exception e) {
 				System.out.println("Erro " + ErrorMessage.EXCEPTION_ERROR.value() + ": "
 						+ ErrorMessage.EXCEPTION_ERROR.description());
-				new ProxyResponseSender().sendErrorMessage(mqttClient, clientId, messageId,
+				new MqttMessageSender().sendErrorMessage(mqttClient, clientId, messageId,
 						ErrorMessage.EXCEPTION_ERROR.value(), ErrorMessage.EXCEPTION_ERROR.description());
 			}
 			break;
