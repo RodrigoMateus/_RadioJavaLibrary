@@ -58,10 +58,10 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 
 		// Argumentos para sendExplicitData():
 		// 1º: device de destino da mensagem.
-		// 2º: define o tipo de fragmento (INIT, DATA ou END).
-		// 3º: define o tipo de conteúdo da mensagem.
-		// 4º: define o número do fragmento enviado.
-		// 5º: define o tamanho do fragmento enviado.
+		// 2º: define o tipo de fragmento (INIT, DATA ou END)- SourceEndpoint.
+		// 3º: define o tipo de conteúdo da mensagem - DestinationEndpoint.
+		// 4º: define o número do fragmento enviado - ClusterID.
+		// 5º: define o tamanho do fragmento enviado - ProfileID.
 		// 6º: byte[] com fragmento da mensagem original.
 		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_INIT, contentType, numPackage,
 				messageSize.length, messageSize);
