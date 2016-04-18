@@ -57,6 +57,7 @@ public class MqttRouter implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
+		System.out.println(new String(message.getPayload()));
 		mqttMessageHandler.processMessage(mqttClient, myDevice, remoteDevice, topic, message);
 	}
 

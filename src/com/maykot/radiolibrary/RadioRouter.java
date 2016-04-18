@@ -56,13 +56,15 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 
 		byte[] messageSize = String.valueOf(dataSize).getBytes();
 
-		// Argumentos para sendExplicitData():
-		// 1º: device de destino da mensagem.
-		// 2º: define o tipo de fragmento (INIT, DATA ou END)- SourceEndpoint.
-		// 3º: define o tipo de conteúdo da mensagem - DestinationEndpoint.
-		// 4º: define o número do fragmento enviado - ClusterID.
-		// 5º: define o tamanho do fragmento enviado - ProfileID.
-		// 6º: byte[] com fragmento da mensagem original.
+		/**
+		* Argumentos para sendExplicitData():
+		* 1º: device de destino da mensagem.
+		* 2º: define o tipo de fragmento (INIT, DATA ou END)- SourceEndpoint.
+		* 3º: define o tipo de conteúdo da mensagem - DestinationEndpoint.
+		* 4º: define o número do fragmento enviado - ClusterID.
+		* 5º: define o tamanho do fragmento enviado - ProfileID.
+		* 6º: byte[] com fragmento da mensagem original.
+		*/
 		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_INIT, contentType, numPackage,
 				messageSize.length, messageSize);
 
@@ -87,14 +89,15 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 
 	@Override
 	public void explicitDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
-		// Métodos de ExplicitXBeeMessage:
-		// .getDevice(): retorna device de destino da mensagem.
-		// .getSourceEndpoint() retorna o tipo de fragmento (INIT, DATA ou END).
-		// .getDestinationEndpoint() retorna o tipo de conteúdo da mensagem.
-		// .getClusterID() retorna o número do fragmento enviado.
-		// .getProfileID() retorna o tamanho do fragmento enviado.
-		// .getData() retorna o byte[] com fragmento da mensagem original
-
+		/**
+		* Métodos de ExplicitXBeeMessage:
+		* .getDevice(): retorna device de destino da mensagem.
+		* .getSourceEndpoint() retorna o tipo de fragmento (INIT, DATA ou END).
+		* .getDestinationEndpoint() retorna o tipo de conteúdo da mensagem.
+		* .getClusterID() retorna o número do fragmento enviado.
+		* .getProfileID() retorna o tamanho do fragmento enviado.
+		* .getData() retorna o byte[] com fragmento da mensagem original
+		*/
 		byte[] byteArrayMessage;
 		RemoteXBeeDevice sourceDeviceAddress = explicitXBeeMessage.getDevice();
 
