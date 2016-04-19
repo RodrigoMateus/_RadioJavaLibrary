@@ -5,15 +5,14 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
+import com.digi.xbee.api.ZigBeeDevice;
 import com.maykot.radiolibrary.utils.DeviceConfig;
 
 public class MqttRouter implements MqttCallback {
 
 	private static MqttRouter uniqueInstance;
-	private DigiMeshDevice myDevice;
+	private ZigBeeDevice myDevice;
 	private RemoteXBeeDevice remoteDevice;
 	private MqttClient mqttClient;
 	private MqttMessageHandler mqttMessageHandler;
@@ -28,7 +27,7 @@ public class MqttRouter implements MqttCallback {
 		return uniqueInstance;
 	}
 
-	public MqttClient setMqttRouter(DeviceConfig deviceConfig, DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice)
+	public MqttClient setMqttRouter(DeviceConfig deviceConfig, ZigBeeDevice myDevice, RemoteXBeeDevice remoteDevice)
 			throws MqttException {
 		this.myDevice = myDevice;
 		this.remoteDevice = remoteDevice;
@@ -57,7 +56,6 @@ public class MqttRouter implements MqttCallback {
 
 	@Override
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
-		System.out.println(new String(message.getPayload()));
 		mqttMessageHandler.processMessage(mqttClient, myDevice, remoteDevice, topic, message);
 	}
 

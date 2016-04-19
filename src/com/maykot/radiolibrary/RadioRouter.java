@@ -3,9 +3,8 @@ package com.maykot.radiolibrary;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
+import com.digi.xbee.api.ZigBeeDevice;
 import com.digi.xbee.api.exceptions.TimeoutException;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IExplicitDataReceiveListener;
@@ -29,7 +28,7 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 		return uniqueInstance;
 	}
 
-	public void sendMessage(DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice, int contentType, byte[] dataToSend)
+	public void sendMessage(ZigBeeDevice myDevice, RemoteXBeeDevice remoteDevice, int contentType, byte[] dataToSend)
 			throws TimeoutException, XBeeException {
 
 		int dataSize = dataToSend.length;
@@ -71,8 +70,7 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 		do {
 			byte[] fragmentOfData = Arrays.copyOfRange(dataToSend, firstBytePosition, lastBytePosition);
 			fragmentArray[numPackage] = fragmentOfData;
-			myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_DATA, contentType, numPackage,
-					fragmentOfData.length, fragmentOfData);
+			myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_DATA, contentType, numPackage, fragmentOfData.length, fragmentOfData);
 			firstBytePosition = lastBytePosition;
 			lastBytePosition = lastBytePosition + MessageParameter.PAYLOAD_SIZE;
 			if (lastBytePosition > dataSize) {
@@ -118,6 +116,7 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 					(explicitXBeeMessage.getClusterID() * MessageParameter.PAYLOAD_SIZE),
 					explicitXBeeMessage.getData().length);
 			messageHashmap.put(sourceDeviceAddress, byteArrayMessage);
+			System.out.println("MESSAGE_DATA nº " + explicitXBeeMessage.getClusterID());
 			break;
 
 		case MessageParameter.MESSAGE_END:

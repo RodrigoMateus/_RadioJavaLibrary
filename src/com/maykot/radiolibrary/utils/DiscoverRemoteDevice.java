@@ -1,7 +1,7 @@
 package com.maykot.radiolibrary.utils;
 
-import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
+import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.XBeeNetwork;
 import com.digi.xbee.api.exceptions.XBeeException;
 
@@ -9,7 +9,7 @@ public class DiscoverRemoteDevice {
 
 	private static RemoteXBeeDevice remoteDevice;
 
-	public static RemoteXBeeDevice discover(DeviceConfig deviceConfig, DigiMeshDevice myDevice) throws XBeeException {
+	public static RemoteXBeeDevice discover(DeviceConfig deviceConfig, XBeeDevice myDevice) throws XBeeException {
 
 		// Obtain the remote XBee device from the XBee network.
 		XBeeNetwork xbeeNetwork = myDevice.getNetwork();
