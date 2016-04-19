@@ -2,9 +2,12 @@ package com.maykot.radiolibrary.model;
 
 public final class MessageParameter {
 
-	// Payload é a quantidade de bytes que cabe em uma mensagem
-	// ou MTU (Maximum Transmission Unit)
-	public static final int PAYLOAD_SIZE = 250;
+	/**
+	 * Payload ou MTU (Maximum Transmission Unit) é a quantidade de bytes que cabe em uma mensagem.
+	 * Para XTend usar PAYLOAD_SIZE = 250 e 
+	 * para XBee usar PAYLOAD_SIZE = 100.
+	 */
+	public static final int PAYLOAD_SIZE = 100;
 
 	// Parâmetros usados em ExplicitXBeeMessage
 	public static final int CLUSTER_ID					 = 0;  // Representa o nº do fragmento enviado (numPackage) - 1º pacote = nº0

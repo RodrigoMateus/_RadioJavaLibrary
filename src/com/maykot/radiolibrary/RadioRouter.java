@@ -64,8 +64,7 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 		* 5º: define o tamanho do fragmento enviado - ProfileID.
 		* 6º: byte[] com fragmento da mensagem original.
 		*/
-		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_INIT, contentType, numPackage,
-				messageSize.length, messageSize);
+		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_INIT, contentType, numPackage, messageSize.length, messageSize);
 
 		do {
 			byte[] fragmentOfData = Arrays.copyOfRange(dataToSend, firstBytePosition, lastBytePosition);
