@@ -1,7 +1,6 @@
 package com.maykot.radiolibrary.utils;
 
 import com.digi.xbee.api.DigiMeshDevice;
-import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.ZigBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.models.APIOutputMode;

@@ -2,7 +2,6 @@ package com.maykot.radiolibrary.mqtt;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.apache.commons.lang3.SerializationUtils;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -11,6 +10,9 @@ import com.digi.xbee.api.ZigBeeDevice;
 import com.digi.xbee.api.exceptions.TimeoutException;
 import com.digi.xbee.api.exceptions.TransmitException;
 import com.digi.xbee.api.exceptions.XBeeException;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.maykot.radiolibrary.model.Point;
 import com.maykot.radiolibrary.RadioRouter;
 import com.maykot.radiolibrary.model.ErrorMessage;
 import com.maykot.radiolibrary.model.MessageParameter;
@@ -30,7 +32,7 @@ public class MqttMessageHandler {
 	}
 
 	public void processMessage(MqttClient mqttClient, ZigBeeDevice myDevice, RemoteXBeeDevice remoteDevice,
-			String topic, MqttMessage message) {
+			String topic, MqttMessage mqttMessage) {
 
 		// Regra de formatação de "topic":
 		// maykot/CONTENT_TYPE/MQTT_CLIENT_ID/MESSAGE_ID
@@ -39,14 +41,15 @@ public class MqttMessageHandler {
 		String clientId = topicParameter[2];
 		String messageId = topicParameter[3];
 
-		byte[] dataToSend = message.getPayload();
+		byte[] dataToSend = mqttMessage.getPayload();
 
 		switch (contentType) {
 		case "request":
 			try {
 				ProxyRequest proxyRequest = (ProxyRequest) SerializationUtils.deserialize(dataToSend);
 
-				// Registro da hora de envio de uma mensagem vinda do App Móvel
+				// Salva o Log das mensagens vindas do App Móvel
+				saveCoordinates(proxyRequest.getBody());
 				LogRecord.insertLog("MobileRequest_RouterLog",
 						new String(clientId + ";" + messageId + ";"
 								+ new String(new SimpleDateFormat("yyyy-MM-dd;HH:mm:ss:SSS").format(new Date())) + ";"
@@ -83,6 +86,17 @@ public class MqttMessageHandler {
 
 		default:
 			break;
+		}
+	}
+
+	private void saveCoordinates(byte[] message) {
+		Gson gson = new Gson();
+
+		try {
+			Point point = gson.fromJson(new String(message), Point.class);
+			LogRecord.insertCoordinates("CoordinatesFromMobile", point.latitude + "," + point.longitude);
+		} catch (JsonSyntaxException e1) {
+			System.out.println("Mensagem não contém um JSON válido.");
 		}
 	}
 
