@@ -7,7 +7,7 @@ public final class MessageParameter {
 	 * Para XTend usar PAYLOAD_SIZE = 250 e 
 	 * para XBee usar PAYLOAD_SIZE = 100.
 	 */
-	public static final int PAYLOAD_SIZE = 100;
+	public static final int PAYLOAD_SIZE = 250;
 
 	// Parâmetros usados em ExplicitXBeeMessage
 	public static final int CLUSTER_ID					 = 0;  // Representa o nº do fragmento enviado (numPackage) - 1º pacote = nº0

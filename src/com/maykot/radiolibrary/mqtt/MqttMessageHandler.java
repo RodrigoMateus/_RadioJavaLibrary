@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.SerializationUtils;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
 import com.digi.xbee.api.ZigBeeDevice;
 import com.digi.xbee.api.exceptions.TimeoutException;
@@ -19,6 +20,7 @@ import com.maykot.radiolibrary.model.MessageParameter;
 import com.maykot.radiolibrary.model.ProxyRequest;
 import com.maykot.radiolibrary.utils.LogRecord;
 
+@SuppressWarnings("unused")
 public class MqttMessageHandler {
 
 	private RadioRouter radioRouter;
@@ -31,7 +33,7 @@ public class MqttMessageHandler {
 		this.radioRouter = radioRouter;
 	}
 
-	public void processMessage(MqttClient mqttClient, ZigBeeDevice myDevice, RemoteXBeeDevice remoteDevice,
+	public void processMessage(MqttClient mqttClient, DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice,
 			String topic, MqttMessage mqttMessage) {
 
 		// Regra de formatação de "topic":
