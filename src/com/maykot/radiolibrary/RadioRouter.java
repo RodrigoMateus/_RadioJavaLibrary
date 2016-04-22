@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import com.digi.xbee.api.DigiMeshDevice;
 import com.digi.xbee.api.RemoteXBeeDevice;
-import com.digi.xbee.api.ZigBeeDevice;
 import com.digi.xbee.api.exceptions.TimeoutException;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IExplicitDataReceiveListener;
@@ -13,7 +12,6 @@ import com.digi.xbee.api.models.ExplicitXBeeMessage;
 import com.maykot.radiolibrary.interfaces.IProcessMessage;
 import com.maykot.radiolibrary.model.MessageParameter;
 
-@SuppressWarnings("unused")
 public class RadioRouter implements IExplicitDataReceiveListener {
 
 	private static RadioRouter uniqueInstance;
