@@ -32,24 +32,20 @@ public class DeviceConfig {
 		return uniqueInstance;
 	}
 
-	public String getXTendPort() {
-		return propertiesHashMap.get("XTendPort");
+	public String getDeviceType() {
+		return propertiesHashMap.get("DeviceType");
 	}
 
-	public int getXTendBaudRate() {
-		return Integer.parseInt(propertiesHashMap.get("XTendBaudRate"));
+	public String getDevicePort() {
+		return propertiesHashMap.get("DevicePort");
+	}
+
+	public int getDeviceBaudRate() {
+		return Integer.parseInt(propertiesHashMap.get("DeviceBaudRate"));
 	}
 
 	public int getTimeOutForSyncOperations() {
 		return Integer.parseInt(propertiesHashMap.get("TimeOutForSyncOperations"));
-	}
-
-	public String getXbeePort() {
-		return propertiesHashMap.get("XBeePort");
-	}
-
-	public int getXbeeBaudRate() {
-		return Integer.parseInt(propertiesHashMap.get("XBeeBaudRate"));
 	}
 
 	public String getBrokerURL() {

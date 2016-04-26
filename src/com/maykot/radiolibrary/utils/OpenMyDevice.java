@@ -12,7 +12,7 @@ public class OpenMyDevice {
 	public static ZigBeeDevice open(DeviceConfig deviceConfig, ZigBeeDevice myDevice) {
 
 		try {
-			myDevice = new ZigBeeDevice(deviceConfig.getXTendPort(), deviceConfig.getXTendBaudRate());
+			myDevice = new ZigBeeDevice(deviceConfig.getDevicePort(), deviceConfig.getDeviceBaudRate());
 			myDevice.open();
 			myDevice.setAPIOutputMode(APIOutputMode.MODE_EXPLICIT);
 			myDevice.setReceiveTimeout(deviceConfig.getTimeOutForSyncOperations());
@@ -27,7 +27,7 @@ public class OpenMyDevice {
 		for (String port : SerialPorts.getSerialPortList()) {
 			try {
 				System.out.println("Try " + port);
-				myDevice = new ZigBeeDevice(port, deviceConfig.getXTendBaudRate());
+				myDevice = new ZigBeeDevice(port, deviceConfig.getDeviceBaudRate());
 				myDevice.open();
 				myDevice.setAPIOutputMode(APIOutputMode.MODE_EXPLICIT);
 				myDevice.setReceiveTimeout(deviceConfig.getTimeOutForSyncOperations());
@@ -47,7 +47,7 @@ public class OpenMyDevice {
 	public static DigiMeshDevice open(DeviceConfig deviceConfig, DigiMeshDevice myDevice) {
 
 		try {
-			myDevice = openDevice(deviceConfig.getXTendPort(), deviceConfig.getXTendBaudRate());
+			myDevice = openDevice(deviceConfig.getDevicePort(), deviceConfig.getDeviceBaudRate());
 			myDevice.setReceiveTimeout(deviceConfig.getTimeOutForSyncOperations());
 			myDevice.addExplicitDataListener(RadioRouter.getInstance());
 			System.out.println("Was found LOCAL radio " + myDevice.getNodeID() + " (PowerLevel "
@@ -60,7 +60,7 @@ public class OpenMyDevice {
 		for (String port : SerialPorts.getSerialPortList()) {
 			try {
 				System.out.println("Try " + port);
-				myDevice = openDevice(port, deviceConfig.getXTendBaudRate());
+				myDevice = openDevice(port, deviceConfig.getDeviceBaudRate());
 				myDevice.setReceiveTimeout(deviceConfig.getTimeOutForSyncOperations());
 				myDevice.addExplicitDataListener(RadioRouter.getInstance());
 				System.out.println("Was found LOCAL radio " + myDevice.getNodeID() + " (PowerLevel "
