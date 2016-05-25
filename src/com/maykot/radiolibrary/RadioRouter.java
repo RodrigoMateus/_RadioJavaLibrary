@@ -28,8 +28,8 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 		return uniqueInstance;
 	}
 
-	public void sendMessage(DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice, int contentType, byte[] dataToSend)
-			throws TimeoutException, XBeeException {
+	public <T> void sendMessage(DigiMeshDevice myDevice, RemoteXBeeDevice remoteDevice, int contentType,
+			byte[] dataToSend) throws TimeoutException, XBeeException {
 
 		int dataSize = dataToSend.length;
 		int firstBytePosition = 0;
@@ -56,20 +56,21 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 		byte[] messageSize = String.valueOf(dataSize).getBytes();
 
 		/**
-		* Argumentos para sendExplicitData():
-		* 1º: device de destino da mensagem.
-		* 2º: define o tipo de fragmento (INIT, DATA ou END)- SourceEndpoint.
-		* 3º: define o tipo de conteúdo da mensagem - DestinationEndpoint.
-		* 4º: define o número do fragmento enviado - ClusterID.
-		* 5º: define o tamanho do fragmento enviado - ProfileID.
-		* 6º: byte[] com fragmento da mensagem original.
-		*/
-		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_INIT, contentType, numPackage, messageSize.length, messageSize);
+		 * Argumentos para sendExplicitData(): 1º: device de destino da
+		 * mensagem. 2º: define o tipo de fragmento (INIT, DATA ou END)-
+		 * SourceEndpoint. 3º: define o tipo de conteúdo da mensagem -
+		 * DestinationEndpoint. 4º: define o número do fragmento enviado -
+		 * ClusterID. 5º: define o tamanho do fragmento enviado - ProfileID. 6º:
+		 * byte[] com fragmento da mensagem original.
+		 */
+		myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_INIT, contentType, numPackage,
+				messageSize.length, messageSize);
 
 		do {
 			byte[] fragmentOfData = Arrays.copyOfRange(dataToSend, firstBytePosition, lastBytePosition);
 			fragmentArray[numPackage] = fragmentOfData;
-			myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_DATA, contentType, numPackage, fragmentOfData.length, fragmentOfData);
+			myDevice.sendExplicitData(remoteDevice, MessageParameter.MESSAGE_DATA, contentType, numPackage,
+					fragmentOfData.length, fragmentOfData);
 			firstBytePosition = lastBytePosition;
 			lastBytePosition = lastBytePosition + MessageParameter.PAYLOAD_SIZE;
 			if (lastBytePosition > dataSize) {
@@ -87,14 +88,13 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 	@Override
 	public void explicitDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
 		/**
-		* Métodos de ExplicitXBeeMessage:
-		* .getDevice(): retorna device de destino da mensagem.
-		* .getSourceEndpoint() retorna o tipo de fragmento (INIT, DATA ou END).
-		* .getDestinationEndpoint() retorna o tipo de conteúdo da mensagem.
-		* .getClusterID() retorna o número do fragmento enviado.
-		* .getProfileID() retorna o tamanho do fragmento enviado.
-		* .getData() retorna o byte[] com fragmento da mensagem original
-		*/
+		 * Métodos de ExplicitXBeeMessage: .getDevice(): retorna device de
+		 * destino da mensagem. .getSourceEndpoint() retorna o tipo de fragmento
+		 * (INIT, DATA ou END). .getDestinationEndpoint() retorna o tipo de
+		 * conteúdo da mensagem. .getClusterID() retorna o número do fragmento
+		 * enviado. .getProfileID() retorna o tamanho do fragmento enviado.
+		 * .getData() retorna o byte[] com fragmento da mensagem original
+		 */
 		byte[] byteArrayMessage;
 		RemoteXBeeDevice sourceDeviceAddress = explicitXBeeMessage.getDevice();
 
@@ -104,6 +104,10 @@ public class RadioRouter implements IExplicitDataReceiveListener {
 
 		case MessageParameter.MESSAGE_INIT:
 			byteArrayMessage = new byte[Integer.parseInt(new String(explicitXBeeMessage.getData()))];
+			// Se existe mensagem anterior salva no messageHashmap, apaga mensagem
+			if (messageHashmap.containsKey(sourceDeviceAddress)) {
+				messageHashmap.remove(sourceDeviceAddress);
+			}
 			messageHashmap.put(sourceDeviceAddress, byteArrayMessage);
 
 			System.out.println("MESSAGE_INIT");
